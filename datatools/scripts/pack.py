@@ -179,7 +179,7 @@ class BFDBuffer:
 
 
 def pack_fn(data: Array,
-            indices: Array,
+            global_indices: Array,
             process_id: int,
             options: PackOptions):
     buffer_cls = BFDBuffer if options.bfd else SingleBuffer
