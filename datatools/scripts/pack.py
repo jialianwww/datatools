@@ -135,7 +135,7 @@ class SingleBuffer:
             self.token_buffer = []
             self.num_tokens = 0
             if not self.options.single:
-                tokens = add_special_tokens(tokens[self.options.max_length - self.options.overlap:], self.options, mos=True)
+                tokens = add_special_tokens(tokens[self.options.pack_length - self.options.overlap:], self.options, mos=True)
 
                 if len(tokens) >= self.options.min_length:
                     self.token_buffer.append(tokens)
