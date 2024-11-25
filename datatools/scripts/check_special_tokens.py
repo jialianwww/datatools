@@ -13,6 +13,8 @@ def check(dataset_path):
         if 'reserve' not in token:
             special_tokens_to_check.append(token)
 
+    # special_tokens_to_check: '<|begin_of_text|>', '<|end_of_text|>', '<|start_header_id|>', '<|end_header_id|>', '<|eot_id|>'
+
     special_tokens_found = []
     for sample in dataset:
         text = tokenizer.decode(sample["input_ids"])
@@ -26,6 +28,6 @@ def check(dataset_path):
 
 if __name__ == "__main__":
     data_folder = "/dockerx/media/4TB/users/jialiawu/datasets/prolong/prolong_raw"
-    dataset = "textbooks"
-    # dataset = "tuluv2"
+    # dataset = "textbooks"
+    dataset = "tuluv2"
     check(os.path.join(data_folder, dataset))
