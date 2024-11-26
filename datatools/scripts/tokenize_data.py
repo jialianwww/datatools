@@ -19,14 +19,12 @@ from streaming.base.array import Array
 class TokenizeOptions:
     """Options for tokenizing"""
 
-    # Can use "llama2" or "llama3" for Llama models
-    # Otherwise HF tokenizer name
-    tokenizer: str = field(alias=["-T"], default="llama3")
+    tokenizer: str = field(alias=["-T"], default="instella")
 
     truncate_bytes: int = 10_000_000_000
 
     domain: str = ""
-    domain_by: Optional[str] = None
+    domain_by: Optional[str] = "domain"
 
     template_file: Optional[Path] = None
     template: str = "{text}"
@@ -43,7 +41,15 @@ class TokenizeOptions:
 
 
 def load_tokenizer_encoder(options: TokenizeOptions):
-    if options.tokenizer == "llama2":
+    if options.tokenizer == "instella":
+        from datatools.scripts.tokenizers.instella_tokenizer import Tokenizer
+        tokenizer_path = str(Path(__file__).parent / "tokenizers" / "allenai_eleuther-ai-gpt-neox-20b-pii-special.json")
+        assert Path(tokenizer_path).is_file()
+        tokenizer = Tokenizer.from_file(tokenizer_path, eos_token_id=0, pad_token_id=1)
+
+        return partial(tokenizer.encode, add_special_tokens=False)
+    
+    elif options.tokenizer == "llama2":
         from datatools.scripts.tokenizers.llama2_tokenizer import Tokenizer
         tokenizer = Tokenizer(str(Path(__file__).parent / "tokenizers" / "llama2_tokenizer.model"))
         return partial(tokenizer.encode, bos=False, eos=False)
